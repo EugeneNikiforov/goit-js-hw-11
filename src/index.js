@@ -48,7 +48,7 @@ function startCreatingGallery(hits) {
     } else if (currentPage === 1) {
         Notiflix.Notify.success("Hooray! We found totalHits images.");
     }
-    // loadBtn.classList.remove(`show`);
+    loadScroll.classList.remove(`show`);
     hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         galleryImages.insertAdjacentHTML(`beforeend`, markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }))
     }).join("");
