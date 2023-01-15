@@ -35,8 +35,8 @@ function resetContainer() {
     return galleryImages.innerHTML = "";
 };
 
-function startCreatingGallery(res) {
-    console.log(res);
+function startCreatingGallery(hits) {
+    console.log(hits);
     if (res.totalHits == 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         galleryImages.innerHTML = "";
@@ -45,7 +45,7 @@ function startCreatingGallery(res) {
         Notiflix.Notify.success("Hooray! We found totalHits images.");
     }
     // loadBtn.classList.remove(`show`);
-    res.hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+    hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         galleryImages.insertAdjacentHTML(`beforeend`, markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }))
     }).join("");
     openingGalleryItem();
