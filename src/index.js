@@ -2,13 +2,16 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import axios from 'axios';
+import debounce from "lodash.debounce";
 
+const DEBOUNCE_DELAY = 300;
 const startForm = document.querySelector(`#search-form`);
 const galleryImages = document.querySelector(`.gallery`);
-const loadBtn = document.querySelector(`.load-more`);
-let currentForm = "";
+// const loadBtn = document.querySelector(`.load-more`);
+const loadScroll = document.querySelector(`.load-more-scroll`);
+let currentForm = ``;
 let currentPage = 1;
-// let currentList = 40;
+
 
 function getImages() {
     const BASE_URL = `https://pixabay.com/api/?key=32864806-51f72b6a703d7e1693286dbfa`;
@@ -17,6 +20,7 @@ function getImages() {
     return response;
 };
 
+window.addEventListener(`scroll`, debounce(undefinedScroll), DEBOUNCE_DELAY);
 startForm.addEventListener(`submit`, submitForm);
 // loadBtn.addEventListener(`click`, loadMoreFoo);
 function submitForm(e) {
@@ -75,7 +79,12 @@ function markupElements({ webformatURL, largeImageURL, tags, likes, views, comme
 //     currentPage += 1;
 // };
 
-// const lightbox = new SimpleLightbox('.gallery a', {
-//     captionsData: `alt`,
-//     captionDelay: 250,
-// });
+function undefinedScroll() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (clientHeight + scrollTop >= scrollHeight - 5) {
+    loadScroll.classList.add(`show`)
+    currentPage += 1;
+        getImages().then(startCreatingGallery).catch(error => console.log(error));
+    return;
+    }
+};
