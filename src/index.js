@@ -37,7 +37,7 @@ function resetContainer() {
 
 function startCreatingGallery(hits) {
     console.log(hits);
-    if (res.totalHits == 0) {
+    if (hits.totalHits == 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         galleryImages.innerHTML = "";
         return;
@@ -71,7 +71,9 @@ function markupElements({ webformatURL, largeImageURL, tags, likes, views, comme
     </ul></div>`
 };
 
-// function loadMoreFoo() {}
+// function loadMoreFoo() {
+//     currentPage += 1;
+// };
 
 // const lightbox = new SimpleLightbox('.gallery a', {
 //     captionsData: `alt`,
