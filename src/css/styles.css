@@ -2,6 +2,62 @@
     box-sizing: border-box;
 }
 body {
+    background-color: #fafafa;
+    color: #212121;
     margin: 0;
     line-height: 1.5;
+}
+.search-form {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+}
+input {
+    width: 100%;
+    height: 42px;
+    background: #f9f0da;
+    padding-left: 15px;
+}
+.search-form__btn {
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #f15b42;
+    cursor: pointer;
+}
+input,
+.search-form__btn {
+    border: none;
+    outline: none;
+    border-radius: 3px;
+}
+.gallery__item {
+    width: 400px;
+    height: 400px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+}
+.gallery__item-info {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    padding-top: 15px;
+}
+.gallery__item-desc {
+    font-weight: 700;
+}
+.gallery__item-link {
+    text-align: center;
+    font-weight: 400;
+}
+.gallery__item-image:hover {
+    transform: scale(1.05);
+}
+.gallery {
+    text-align: center;
+    margin-top: 20px;
 }

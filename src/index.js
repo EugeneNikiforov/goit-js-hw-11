@@ -21,7 +21,7 @@ startForm.addEventListener(`submit`, submitForm);
 // loadBtn.addEventListener(`click`, loadMoreFoo);
 function submitForm(e) {
     e.preventDefault();
-    resetStorage();
+    resetContainer();
     currentForm = e.currentTarget.elements.searchQuery.value;
     if (currentForm == 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
@@ -31,7 +31,7 @@ function submitForm(e) {
     // loadBtn.style.visibility = "visible";
     getImages().then(startCreatingGallery).catch(error => console.log(error));
 };
-function resetStorage() {
+function resetContainer() {
     return galleryImages.innerHTML = "";
 };
 
@@ -42,9 +42,34 @@ function startCreatingGallery(res) {
         galleryImages.innerHTML = "";
         return;
     } else if (currentPage === 1) {
-        Notiflix
+        Notiflix.Notify.success("Hooray! We found totalHits images.");
     }
-}
+    // loadBtn.classList.remove(`show`);
+    res.hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+        galleryImages.insertAdjacentHTML(`beforeend`, markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }))
+    }).join("");
+    openingGalleryItem();
+};
+
+function openingGalleryItem() {
+    const lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: `alt`,
+        captionDelay: 250,
+        captions: true,
+    })
+    lightbox.refresh();
+};
+
+function markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
+    return `<div class="gallery__item"><a href="${largeImageURL}">
+    <img class="gallery__item-image" src="${webformatURL}" alt="${tags}" loading="lazy" width="400px" height="300px"></a>
+    <ul class="gallery__item-info">
+    <li class="gallery__item-desc">Likes<p class="gallery__item-link">${likes}</p></li>
+    <li class="gallery__item-desc">Views<p class="gallery__item-link">${views}</p></li>
+    <li class="gallery__item-desc">Comments<p class="gallery__item-link">${comments}</p></li>
+    <li class="gallery__item-desc">Downloads<p class="gallery__item-link">${downloads}</p></li>
+    </ul></div>`
+};
 
 // function loadMoreFoo() {}
 
@@ -52,4 +77,3 @@ function startCreatingGallery(res) {
 //     captionsData: `alt`,
 //     captionDelay: 250,
 // });
-// console.log(galleryImages);
