@@ -19,12 +19,12 @@ input {
     padding-left: 15px;
 }
 .search-form__btn {
-    height: 52px;
-    width: 26px;
+    height: 26px;
+    width: 52px;
     position: absolute;
     top: 8px;
     right: 8px;
-    background: #f15b42;
+    background: #41f190;
     cursor: pointer;
 }
 input,
