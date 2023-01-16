@@ -13,11 +13,12 @@ let currentForm = ``;
 let currentPage = 1;
 
 
-function getImages() {
+async function getImages() {
     const BASE_URL = `https://pixabay.com/api/?key=32864806-51f72b6a703d7e1693286dbfa`;
     const OPTS = `&image_type=photo&orientation=horizontal&safesearch=true`;
-    const response = axios.get(`${BASE_URL}${OPTS}&per_page=40&page=${currentPage}&q=${currentForm}`);
-    return response;
+    const response = await axios.get(`${BASE_URL}${OPTS}&per_page=40&page=${currentPage}&q=${currentForm}`);
+    console.log(response.data);
+    return response.data;
 };
 
 window.addEventListener(`scroll`, debounce(undefinedScroll), DEBOUNCE_DELAY);
@@ -27,7 +28,7 @@ function submitForm(e) {
     e.preventDefault();
     resetContainer();
     currentForm = e.currentTarget.elements.searchQuery.value;
-    if (currentForm == 0) {
+    if (currentForm === 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         return;
     }
@@ -39,16 +40,16 @@ function resetContainer() {
     return galleryImages.innerHTML = "";
 };
 
-function startCreatingGallery(hits) {
-    console.log(hits);
-    if (hits.totalHits == 0) {
+function startCreatingGallery(data) {
+    const { hits, totalHits } = data;
+    if (hits.length === 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         galleryImages.innerHTML = "";
         return;
     } else if (currentPage === 1) {
-        Notiflix.Notify.success("Hooray! We found totalHits images.");
+        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
     }
-    loadScroll.classList.remove(`show`);
+    // loadScroll.classList.remove(`show`);
     hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         galleryImages.insertAdjacentHTML(`beforeend`, markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }))
     }).join("");
@@ -65,13 +66,25 @@ function openingGalleryItem() {
 };
 
 function markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
-    return `<div class="gallery__item"><a href="${largeImageURL}">
-    <img class="gallery__item-image" src="${webformatURL}" alt="${tags}" loading="lazy" width="400px" height="300px"></a>
-    <ul class="gallery__item-info">
-    <li class="gallery__item-desc">Likes<p class="gallery__item-link">${likes}</p></li>
-    <li class="gallery__item-desc">Views<p class="gallery__item-link">${views}</p></li>
-    <li class="gallery__item-desc">Comments<p class="gallery__item-link">${comments}</p></li>
-    <li class="gallery__item-desc">Downloads<p class="gallery__item-link">${downloads}</p></li>
+    return `<div class="photo-card"><a href="${largeImageURL}">
+    <img class="photo-card__image" src="${webformatURL}" alt="${tags}" loading="lazy" width="400" height="300" /></a>
+    <ul class="info">
+    <li class="info-item__desc">
+    Likes
+    <p class="info-item">${likes}</p>
+    </li>
+    <li class="info-item__desc">
+    Views
+    <p class="info-item">${views}</p>
+    </li>
+    <li class="info-item__desc">
+    Comments
+    <p class="info-item">${comments}</p>
+    </li>
+    <li class="info-item__desc">
+    Downloads
+    <p class="info-item">${downloads}</p>
+    </li>
     </ul></div>`
 };
 
