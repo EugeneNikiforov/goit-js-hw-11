@@ -11,6 +11,11 @@ const galleryImages = document.querySelector(`.gallery`);
 const loadScroll = document.querySelector(`.load-more-scroll`);
 let currentForm = ``;
 let currentPage = 1;
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: `alt`,
+    captionDelay: 250,
+    captions: true,
+});
 
 
 async function getImages() {
@@ -53,17 +58,13 @@ function startCreatingGallery(data) {
     hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         galleryImages.insertAdjacentHTML(`beforeend`, markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }))
     }).join("");
-    openingGalleryItem();
-};
-
-function openingGalleryItem() {
-    const lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: `alt`,
-        captionDelay: 250,
-        captions: true,
-    })
     lightbox.refresh();
 };
+
+// function openingGalleryItem() {
+    
+    
+// };
 
 function markupElements({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
     return `<div class="photo-card"><a href="${largeImageURL}">
